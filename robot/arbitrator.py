@@ -1,13 +1,14 @@
 """File contains the Arbitrator class"""
+from robot.bbcon import BBCON
 
 
 class Arbitrator:
     """Fetches the active Behaviors from BBCON and choses a winner among them"""
 
-    bbcon: BBCON
+    _bbcon: BBCON
 
     def __init__(self, bbcon: BBCON):
-        self.bbcon = bbcon
+        self._bbcon = bbcon
 
     def choose_action(self):
         """Fetches the active Behaciors from BBCON and chose the one with highest priority and set

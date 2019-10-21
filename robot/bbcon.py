@@ -4,11 +4,11 @@
 class BBCON:
     """Behavior-Based Controller - checked at each timestep to determine the robot's next move"""
 
-    behaviors = None
-    active_behaviors = None
-    sensobs = None
-    motobs = None
-    arbitrator = None
+    _behaviors = None
+    _active_behaviors = None
+    _sensobs = None
+    _motobs = None
+    _arbitrator = None
 
     def add_behavior(self):
         """Append a newly-created behavior onto the behaviors list"""
@@ -35,3 +35,8 @@ class BBCON:
         5 - Wait
         6 - Reset Sensobs
         """
+        return
+
+    def get_active_behaviors(self):
+        """Getter"""
+        return self._active_behaviors

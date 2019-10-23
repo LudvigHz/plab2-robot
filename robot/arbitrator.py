@@ -1,12 +1,11 @@
 """File contains the Arbitrator class"""
-from robot.bbcon import BBCON
 from random import random
 
 
 class Arbitrator:
     """Fetches the active Behaviors from BBCON and choses a winner among them"""
 
-    _bbcon: BBCON
+    _bbcon = None
 
     def __init__(self, bbcon):
         self._bbcon = bbcon

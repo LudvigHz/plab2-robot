@@ -8,3 +8,7 @@ class Sensob:
         """Fetch the relevant sensor value(s) and convert them into the pre-processed sensob
         value"""
         return
+
+    def reset(self):
+        """Reset the sensor(s) if applicable"""
+        return

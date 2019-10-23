@@ -1,5 +1,6 @@
 """File contains the BBCON class"""
 
+from time import perf_counter, sleep
 from robot.arbitrator import Arbitrator
 
 
@@ -8,6 +9,7 @@ class BBCON:
 
     "Config"
     _stochastic = False
+    _delay = 0.5
 
     _behaviors = []
     _active_behaviors = []
@@ -51,7 +53,9 @@ class BBCON:
             behavior.update()
 
         if self._stochastic:
-            motor_recommendations, halt_request = self._arbitrator.choose_action_stochastic()
+            motor_recommendations, halt_request = (
+                self._arbitrator.choose_action_stochastic()
+            )
         else:
             motor_recommendations, halt_request = self._arbitrator.choose_action()
 
@@ -62,6 +66,14 @@ class BBCON:
         for motob in self._motobs:
             motob.update(motor_recommendations)
 
+        tic = perf_counter()
+
+        for sensob in self._sensobs:
+            sensob.reset()
+
+        delta_time = perf_counter() - tic
+        if delta_time < self._delay:
+            sleep(self._delay - delta_time)
 
     def get_active_behaviors(self):
         """Getter"""

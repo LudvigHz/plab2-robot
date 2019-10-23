@@ -12,12 +12,10 @@ class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
         """Set up before tests"""
         self.bbcon = BBCON()
+        self.behavior1 = DummyBehavior()
 
     def test_activate_deactivate_behavior(self):
         """Test activate_behavior"""
-
-        self.behavior1 = DummyBehavior()
-        self.bbcon.add_behavior(self.behavior1)
 
         self.assertEqual(0, len(self.bbcon.get_active_behaviors()))
 
@@ -27,6 +25,13 @@ class MyTestCase(unittest.TestCase):
         self.bbcon.deactivate_behavior(self.behavior1)
         self.assertEqual(0, len(self.bbcon.get_active_behaviors()))
 
+    def test_run_one_timestep(self):
+        """Test run_one_timestep()"""
 
-if __name__ == '__main__':
+        self.bbcon.add_behavior(self.behavior1)
+        self.bbcon.activate_behavior(self.behavior1)
+        self.bbcon.run_one_timestep()
+
+
+if __name__ == "__main__":
     unittest.main()

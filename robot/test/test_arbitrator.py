@@ -13,17 +13,17 @@ class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
         """Sets up for testing"""
 
-        self.motor_recommendations1 = ['ONE', 'TWO']
-        self.motor_recommendations2 = ['THREE', 'FOUR']
+        self.motor_recommendations1 = ["ONE", "TWO"]
+        self.motor_recommendations2 = ["THREE", "FOUR"]
 
         self.behavior1 = DummyBehavior()
         self.behavior1.halt_request = False
-        self.behavior1.priority = 0
+        self.behavior1.priority = 0.6
         self.behavior1.motor_recommendations = self.motor_recommendations1
 
         self.behavior2 = DummyBehavior()
-        self. behavior2.halt_request = True
-        self.behavior2.priority = 1
+        self.behavior2.halt_request = True
+        self.behavior2.priority = 0.8
         self.behavior2.motor_recommendations = self.motor_recommendations2
 
         self.bbcon = DummyBBCON()
@@ -34,8 +34,10 @@ class MyTestCase(unittest.TestCase):
     def test_choose_action(self) -> None:
         """Tests .choose_action"""
 
-        self.assertEqual((self.motor_recommendations2, True), self.arbitrator.choose_action())
+        self.assertEqual(
+            (self.motor_recommendations2, True), self.arbitrator.choose_action()
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

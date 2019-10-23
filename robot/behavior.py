@@ -34,3 +34,7 @@ class Behavior:
         """the core computations performed by the behavior that use sensob readings to produce
         motor recommendations (and halt requests)"""
         return
+
+    def get_priority(self):
+        """Getter"""
+        return self._priority

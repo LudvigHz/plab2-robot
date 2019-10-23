@@ -1,7 +1,7 @@
 """File contains the Arbitrator class"""
 from robot.bbcon import BBCON
 from robot.behavior import Behavior
-from typing import List
+from typing import List, Tuple
 
 
 class Arbitrator:
@@ -13,15 +13,18 @@ class Arbitrator:
         self._bbcon = bbcon
 
     def choose_action(self):
-        """Fetches the active Behaviors from BBCON and chose the one with highest priority and set
-        the action for the BBCON"""
+        """Fetches the active Behaviors from BBCON and chose the one with highest priority and
+        returns a tuple with the motor recommendation and flag for if the run should be halted"""
 
         behaviors: List[Behavior] = self._bbcon.get_active_behaviors()
         priority_behavior = behaviors[0]
-        for behavior in behaviors:
-            if
+        for i in range(2, len(behaviors)):
+            if priority_behavior.get_priority() < behaviors[i].get_priority():
+                priority_behavior = behaviors[i]
+        return (priority_behavior.get_motor_recommendations(), priority_behavior.get_halt_request())
 
     def choose_action_stochastic(self):
         """Fetches the active Bevahiors from BBCON and use weight as probability for them to be
-        chosen. Then sets the action for the BBCON"""
+        chosen. Then returns a tuple with the motor recommendation and flag for if the run should
+        be halted"""
         return

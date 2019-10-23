@@ -11,9 +11,7 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up before tests"""
-
         self.bbcon = BBCON()
-
 
     def test_activate_deactivate_behavior(self):
         """Test activate_behavior"""
@@ -28,8 +26,6 @@ class MyTestCase(unittest.TestCase):
 
         self.bbcon.deactivate_behavior(self.behavior1)
         self.assertEqual(0, len(self.bbcon.get_active_behaviors()))
-
-
 
 
 if __name__ == '__main__':

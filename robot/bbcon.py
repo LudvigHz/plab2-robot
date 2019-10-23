@@ -6,6 +6,9 @@ from robot.arbitrator import Arbitrator
 class BBCON:
     """Behavior-Based Controller - checked at each timestep to determine the robot's next move"""
 
+    "Config"
+    _stochastic = False
+
     _behaviors = []
     _active_behaviors = []
     _sensobs = []
@@ -40,7 +43,25 @@ class BBCON:
         5 - Wait
         6 - Reset Sensobs
         """
-        return
+
+        for sensor in self._sensobs:
+            sensor.update()
+
+        for behavior in self._behaviors:
+            behavior.update()
+
+        if self._stochastic:
+            motor_recommendations, halt_request = self._arbitrator.choose_action_stochastic()
+        else:
+            motor_recommendations, halt_request = self._arbitrator.choose_action()
+
+        if halt_request:
+            # TODO halt run
+            return
+
+        for motob in self._motobs:
+            motob.update(motor_recommendations)
+
 
     def get_active_behaviors(self):
         """Getter"""

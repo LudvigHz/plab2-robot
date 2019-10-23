@@ -6,11 +6,11 @@ class DummyBehavior:
 
     motor_recommendations = None
     halt_request = None
-    priority = None
+    weight = None
 
-    def get_priority(self):
+    def get_weight(self):
         """Getter"""
-        return self.priority
+        return self.weight
 
     def get_motor_recommendations(self):
         """Getter"""

@@ -35,9 +35,9 @@ class Behavior:
         motor recommendations (and halt requests)"""
         return
 
-    def get_priority(self):
+    def get_weight(self):
         """Getter"""
-        return self._priority
+        return self._weight
 
     def get_motor_recommendations(self):
         """Getter"""

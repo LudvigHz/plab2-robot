@@ -18,12 +18,12 @@ class MyTestCase(unittest.TestCase):
 
         self.behavior1 = DummyBehavior()
         self.behavior1.halt_request = False
-        self.behavior1.priority = 0.6
+        self.behavior1.weight = 0.6
         self.behavior1.motor_recommendations = self.motor_recommendations1
 
         self.behavior2 = DummyBehavior()
         self.behavior2.halt_request = True
-        self.behavior2.priority = 0.8
+        self.behavior2.weight = 0.8
         self.behavior2.motor_recommendations = self.motor_recommendations2
 
         self.bbcon = DummyBBCON()

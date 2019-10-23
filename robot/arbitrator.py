@@ -12,14 +12,14 @@ class Arbitrator:
         self._bbcon = bbcon
 
     def choose_action(self):
-        """Fetches the active Behaviors from BBCON and chose the one with highest priority and
+        """Fetches the active Behaviors from BBCON and chose the one with highest weight and
         returns a tuple with the motor recommendation and flag for if the run should be halted. If
         several Behaviors have the same priority, the first is chosen"""
 
         behaviors = self._bbcon.get_active_behaviors()
         priority_behavior = behaviors[0]
         for i in range(1, len(behaviors)):
-            if priority_behavior.get_priority() < behaviors[i].get_priority():
+            if priority_behavior.get_weight() < behaviors[i].get_weight():
                 priority_behavior = behaviors[i]
         return (
             priority_behavior.get_motor_recommendations(),
@@ -38,7 +38,7 @@ class Arbitrator:
         total = 0.0
 
         for behavior in behaviors:
-            total += behavior.get_priority()
+            total += behavior.get_weight()
             priorities.append(total)
 
         magic_number = random() * total

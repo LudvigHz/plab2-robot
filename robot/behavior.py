@@ -38,3 +38,11 @@ class Behavior:
     def get_priority(self):
         """Getter"""
         return self._priority
+
+    def get_motor_recommendations(self):
+        """Getter"""
+        return self._motor_recommendations
+
+    def get_halt_request(self):
+        """Getter"""
+        return self._halt_request

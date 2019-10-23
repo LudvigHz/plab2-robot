@@ -7,9 +7,9 @@ class Motob:
     _motors = None
     _value = None
 
-    def update(self):
-        """Receive a new motor recommendation, load it into the value slot, and operationalize
-        it"""
+    def update(self, motor_recommendations):
+        """Receive a list of new motor recommendation, load it into the value slot, and
+        operationalize it"""
         return
 
     def operationalize(self):

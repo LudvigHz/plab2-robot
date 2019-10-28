@@ -18,19 +18,17 @@ class DontCrashBehavior(Behavior):
 
     def consider_deactivation(self):
         """If no obstacle is detected, then deactivate"""
-        for sensob in self._sensobs:
-            for value in sensob.get_values():
-                if value < self._threshold_distance:
-                    return
+        for value in self._raw_values:
+            if value < self._threshold_distance:
+                return
         self._active_flag = False
 
     def consider_activation(self):
         """If an obstacle is detected, then activate"""
-        for sensob in self._sensobs:
-            for value in sensob.get_values():
-                if value < self._threshold_distance:
-                    self._active_flag = True
-                    return
+        for value in self._raw_values:
+            if value < self._threshold_distance:
+                self._active_flag = True
+                return
 
     def sense_and_act(self):
         """Calculate weight, don't generate halt requests. Average _raw_values in case there are

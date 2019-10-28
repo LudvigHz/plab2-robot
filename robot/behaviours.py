@@ -18,10 +18,6 @@ class FollowLine(Behavior):
         if self._match_degree >= 2:
             self._active_flag = True
 
-    def update_sensor_value(self):
-        """Update raw sensor values"""
-        self._raw_values = [sensob.get_values() for sensob in self._sensobs]
-
     def calculate_match_degree(self):
         """Calculate match. Darker reading on the edges give higher values"""
         self._match_degree = sum(
@@ -38,7 +34,7 @@ class FollowLine(Behavior):
         if len(filter(lambda x: x < 0.3, self._raw_values[0][:2])) > 1:
             self._motor_recommendations = [0.2, 0.8]
         # If 1 of the rightmost sensors hava a value higher than 0.2, turn right
-        elif len(filter(lambda x: x < 0.3, self._raw_values[0][3:])) > 1:
+        elif len(filter(lambda x: x < 0.3, self._raw_values[0][4:])) > 1:
             self._motor_recommendations = [0.8, 0.2]
         else:
             self._motor_recommendations = [0.6, 0.6]

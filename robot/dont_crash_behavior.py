@@ -10,8 +10,8 @@ class DontCrashBehavior(Behavior):
     _threshold_distance = 30
     _stop_distance = 10
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, bbcon, priority, sensobs):
+        super().__init__(bbcon, priority, sensobs)
         self._halt_request = False
         self._active_flag = False
         self._motor_recommendations = [0.0, 0.0]
@@ -34,7 +34,12 @@ class DontCrashBehavior(Behavior):
 
     def sense_and_act(self):
         """Calculate weight, don't generate halt requests. Average _raw_values in case there are
-        several"""
-        self._weight = (
-            (sum(self._raw_values) / len(self._raw_values)) - self._stop_distance
-        ) * self._priority
+        several. _raw_values must be in cm"""
+        distance = sum(self._raw_values) / len(self._raw_values)
+        degree = 1
+        if distance > self._stop_distance:
+            degree = (self._threshold_distance - distance) / (
+                self._threshold_distance - self._stop_distance
+            )
+        self._match_degree = degree
+        self._weight = self._match_degree * self._priority

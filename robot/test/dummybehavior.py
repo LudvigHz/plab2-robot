@@ -19,3 +19,7 @@ class DummyBehavior:
     def get_halt_request(self):
         """Getter"""
         return self.halt_request
+
+    def update(self):
+        """Dummy method"""
+        return

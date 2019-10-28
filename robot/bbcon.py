@@ -1,30 +1,40 @@
 """File contains the BBCON class"""
 
+from time import perf_counter, sleep
+from robot.arbitrator import Arbitrator
+
 
 class BBCON:
     """Behavior-Based Controller - checked at each timestep to determine the robot's next move"""
 
-    _behaviors = None
-    _active_behaviors = None
-    _sensobs = None
-    _motobs = None
+    "Config"
+    _stochastic = False
+    _delay = 0.5
+
+    _behaviors = []
+    _active_behaviors = []
+    _sensobs = []
+    _motobs = []
     _arbitrator = None
 
-    def add_behavior(self):
+    def __init__(self):
+        self._arbitrator = Arbitrator(self)
+
+    def add_behavior(self, behavior):
         """Append a newly-created behavior onto the behaviors list"""
-        return
+        self._behaviors.append(behavior)
 
-    def add_sensob(self):
+    def add_sensob(self, sensob):
         """Append a newly-created sensob onto the sensobs list"""
-        return
+        self._sensobs.append(sensob)
 
-    def activate_behavior(self):
+    def activate_behavior(self, behavior):
         """Add an existing behavior onto the active-behaviors list"""
-        return
+        self._active_behaviors.append(behavior)
 
-    def deactivate_behavior(self):
+    def deactivate_behavior(self, behavior):
         """Remove an existing behavior from the active behaviors list"""
-        return
+        self._active_behaviors.remove(behavior)
 
     def run_one_timestep(self):
         """
@@ -35,7 +45,35 @@ class BBCON:
         5 - Wait
         6 - Reset Sensobs
         """
-        return
+
+        for sensor in self._sensobs:
+            sensor.update()
+
+        for behavior in self._behaviors:
+            behavior.update()
+
+        if self._stochastic:
+            motor_recommendations, halt_request = (
+                self._arbitrator.choose_action_stochastic()
+            )
+        else:
+            motor_recommendations, halt_request = self._arbitrator.choose_action()
+
+        if halt_request:
+            # TODO halt run
+            return
+
+        for motob in self._motobs:
+            motob.update(motor_recommendations)
+
+        tic = perf_counter()
+
+        for sensob in self._sensobs:
+            sensob.reset()
+
+        delta_time = perf_counter() - tic
+        if delta_time < self._delay:
+            sleep(self._delay - delta_time)
 
     def get_active_behaviors(self):
         """Getter"""

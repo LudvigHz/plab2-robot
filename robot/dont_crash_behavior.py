@@ -30,7 +30,7 @@ class DontCrashBehavior(Behavior):
                 self._active_flag = True
                 return
 
-    def sense_and_act(self):
+    def _sense_and_act(self):
         """Calculate weight, don't generate halt requests. Average _raw_values in case there are
         several. _raw_values must be in cm"""
         distance = sum(self._raw_values) / len(self._raw_values)

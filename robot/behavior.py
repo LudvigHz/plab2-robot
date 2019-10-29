@@ -1,4 +1,5 @@
 """File contains Behavior class"""
+from abc import abstractmethod
 
 
 class Behavior:
@@ -6,21 +7,33 @@ class Behavior:
     determining a motor request"""
 
     _bbcon = None
-    _sensobs = None
+    _sensobs = []
     _motor_recommendations = None
     _active_flag = None
     _halt_request = None
     _priority = None
     _match_degree = None
     _weight = None
+    _raw_values = None
 
-    def consider_deactivation(self):
+    def __init__(self, bbcon, priority, sensobs):
+        self._bbcon = bbcon
+        self._priority = priority
+        self._sensobs = sensobs
+
+    @abstractmethod
+    def _consider_deactivation(self):
         """Whenever a behavior is active, it should test whether it should deactivate"""
-        return
+        raise NotImplementedError
 
-    def consider_activation(self):
+    @abstractmethod
+    def _consider_activation(self):
         """Whenever a behavior is inactive, it should test whether it should activate"""
-        return
+        raise NotImplementedError
+
+    def update_sensor_value(self):
+        """Update raw sensor values"""
+        self._raw_values = [sensob.get_values() for sensob in self._sensobs]
 
     def update(self):
         """The main interface between the bbcon and the behavior:
@@ -28,12 +41,20 @@ class Behavior:
         2 - Call sense and act
         3 - Update the behavior’s weight
         """
-        return
 
-    def sense_and_act(self):
+        self.update_sensor_value()
+        if self._active_flag:
+            self._consider_deactivation
+        else:
+            self._consider_activation
+
+        self._sense_and_act()
+
+    @abstractmethod
+    def _sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings to produce
         motor recommendations (and halt requests)"""
-        return
+        raise NotImplementedError
 
     def get_weight(self):
         """Getter"""

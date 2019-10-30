@@ -25,7 +25,7 @@ class DetectColor(Behavior):
         self._color_detected = False
         self._weight = 0
         self._camera = Camera()
-        self._imager = Imager.Imager()
+        self._imager = Imager()
         self._color = self._imager.get_color_rgb(colorname)
         self._timer = 0
 

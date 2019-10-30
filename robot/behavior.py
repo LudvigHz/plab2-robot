@@ -35,6 +35,10 @@ class Behavior:
         """Update raw sensor values"""
         self._raw_values = [sensob.get_values() for sensob in self._sensobs]
 
+    def update_sensor_value(self):
+        """Update raw sensor values"""
+        self._raw_values = [sensob.get_values() for sensob in self._sensobs]
+
     def update(self):
         """The main interface between the bbcon and the behavior:
         1 - Update the activity status

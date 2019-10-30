@@ -6,6 +6,7 @@ from robot.motob import Motob
 from robot.sensob import Sensob
 from robot.sensors.reflectance_sensors import ReflectanceSensors
 from robot.sensors.ultrasonic import Ultrasonic
+from zumo_button import ZumoButton
 
 bbcon = BBCON()
 ultra = Sensob([Ultrasonic()])
@@ -18,7 +19,7 @@ bbcon.add_behavior(dont_crash)
 bbcon.add_behavior(follow_line)
 bbcon.activate_behavior(dont_crash)
 bbcon.activate_behavior(follow_line)
-
+ZumoButton().wait_for_press()
 
 while True:
     bbcon.run_one_timestep()

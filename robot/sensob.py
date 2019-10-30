@@ -9,8 +9,7 @@ class Sensob:
 
     def __init__(self, wrappers):
         self._wrappers = wrappers
-        for wrapper in wrappers:
-            wrapper.__init__()
+        self._values = [None] * len(wrappers)
 
     def update(self):
         """Fetch the relevant sensor value(s) and convert them into the pre-processed sensob

@@ -50,6 +50,7 @@ class DetectColor(Behavior):
         mapped_image = self._imager.map_color_wta()
         # iterate through the entire image matrix and check pixel color against
         # local _color variable
+        self._imager.set_image(mapped_image)
         width = self._imager.xmax
         height = self._imager.ymax
         counter = 0

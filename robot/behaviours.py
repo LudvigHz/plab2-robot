@@ -19,12 +19,13 @@ class FollowLine(Behavior):
 
     def calculate_match_degree(self):
         """Calculate match. Darker reading on the edges give higher values"""
-        self._match_degree = sum(
+        self._match_degree = 2
+        """sum(
             [i * (1 - val) for i, val in enumerate(self._raw_values[0][0][2::-1])]
         )
         self._match_degree += sum(
             [i * (1 - val) for i, val in enumerate(self._raw_values[0][0][3:])]
-        )
+        )"""
 
     def _sense_and_act(self):
         self.calculate_match_degree()

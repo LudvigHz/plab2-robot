@@ -30,10 +30,10 @@ class FollowLine(Behavior):
         self.calculate_match_degree()
         self._weight = self._match_degree * self._priority
         # If 1 of the leftmost sensors hava a value higher than 0.2, turn left
-        if len(filter(lambda x: x < 0.3, self._raw_values[0][0][:2])) > 1:
+        if len(list(filter(lambda x: x < 0.3, self._raw_values[0][0][:2]))) > 1:
             self._motor_recommendations = [0.2, 0.8]
         # If 1 of the rightmost sensors hava a value higher than 0.2, turn right
-        elif len(filter(lambda x: x < 0.3, self._raw_values[0][0][4:])) > 1:
+        elif len(list(filter(lambda x: x < 0.3, self._raw_values[0][0][4:]))) > 1:
             self._motor_recommendations = [0.8, 0.2]
         else:
             self._motor_recommendations = [0.6, 0.6]

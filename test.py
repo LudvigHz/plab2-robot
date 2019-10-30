@@ -12,8 +12,12 @@ ultra = Sensob([Ultrasonic()])
 irarray = Sensob([ReflectanceSensors()])
 bbcon.add_sensob(ultra)
 bbcon.add_sensob(irarray)
-bbcon.add_behavior(DontCrashBehavior(bbcon, 0.7, [ultra]))
-bbcon.add_behavior(FollowLine(bbcon, 0.5, [irarray]))
+dont_crash = DontCrashBehavior(bbcon, 0.7, [ultra])
+follow_line = FollowLine(bbcon, 0.5, [irarray])
+bbcon.add_behavior(dont_crash)
+bbcon.add_behavior(follow_line)
+bbcon.activate_behavior(dont_crash)
+bbcon.activate_behavior(follow_line)
 
 
 while True:

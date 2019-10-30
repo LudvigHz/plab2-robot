@@ -1,7 +1,9 @@
 """File contains the BBCON class"""
 
 from time import perf_counter, sleep
+
 from robot.arbitrator import Arbitrator
+from robot.motob import Motob
 
 
 class BBCON:
@@ -14,11 +16,12 @@ class BBCON:
     _behaviors = []
     _active_behaviors = []
     _sensobs = []
-    _motobs = []
+    _motob = []
     _arbitrator = None
 
     def __init__(self):
         self._arbitrator = Arbitrator(self)
+        self._motob = Motob()
 
     def add_behavior(self, behavior):
         """Append a newly-created behavior onto the behaviors list"""
@@ -63,8 +66,7 @@ class BBCON:
             # TODO halt run
             return
 
-        for motob in self._motobs:
-            motob.update(motor_recommendations)
+        self._motob.update(motor_recommendations)
 
         tic = perf_counter()
 

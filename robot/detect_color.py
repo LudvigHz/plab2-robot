@@ -3,7 +3,7 @@
 from robot.behavior import Behavior
 from robot.sensors.camera import Camera
 from robot import Imager
-from .sensors.motors import Motors
+# from .sensors.motors import Motors
 
 
 class DetectColor(Behavior):
@@ -30,7 +30,7 @@ class DetectColor(Behavior):
         self._timer = 0
 
     def reset(self):
-        '''Sets the value slot to None'''
+        '''Resets the object'''
         self._camera.reset()
         self._value = None
         self._color = None
@@ -66,8 +66,8 @@ class DetectColor(Behavior):
         self._active_flag = False
 
     def consider_activation(self):
-        '''Activate if _timer is high enough (take pictures in intervals of 100*delay)'''
-        if self._timer > 100:
+        '''Activate if _timer is high enough (take pictures in intervals of 10*timestep (10*0.5s))'''
+        if self._timer > 10:
             self._active_flag = True
             self._timer = 0
         else:

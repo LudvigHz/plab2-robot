@@ -2,7 +2,7 @@
 
 from robot.behavior import Behavior
 from robot.sensors.camera import Camera
-from robot import Imager
+from robot.sensors.imager2 import Imager
 # from .sensors.motors import Motors
 
 

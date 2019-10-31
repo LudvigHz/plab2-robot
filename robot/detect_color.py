@@ -23,7 +23,7 @@ class DetectColor(Behavior):
         super().__init__(bbcon, priority, sensobs)
         self._halt_request = False
         self._active_flag = False
-        self._motor_recommendations = [0.0, 0.0]  # recommended to stop
+        self._motor_recommendations = [-1.0, -1.0]  # recommended to stop
         self._halt_request = False
         self._color_detected = False
         self._weight = 0
@@ -79,6 +79,7 @@ class DetectColor(Behavior):
         """Calculate weight"""
         self.take_picture()
         self._weight = self._priority * self._match_degree
+
 
     def update(self):
         """The main interface between the bbcon and the behavior:

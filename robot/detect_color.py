@@ -17,7 +17,7 @@ class DetectColor(Behavior):
     _imager = None  # Imager helper-class
     _timer = None
 
-    def __init__(self, bbcon, sensobs, priority, colorname="red"):
+    def __init__(self, bbcon, priority, sensobs, colorname="red"):
         """Color input determines which color the camera should detect: red, green, blue, white or black,
         default is red"""
         super().__init__(bbcon, priority, sensobs)
@@ -27,9 +27,9 @@ class DetectColor(Behavior):
         self._halt_request = False
         self._color_detected = False
         self._weight = 0
+        self._imager = Imager(height=96, width=128)
         self._color = self._imager.get_color_rgb(colorname)
         self._timer = 0
-        self._imager = Imager()
 
     def reset(self):
         """Resets the object"""
@@ -42,16 +42,17 @@ class DetectColor(Behavior):
 
     def analyze_picture(self, threshold):
         """Returns a boolean, determining if the picture is a match with _color"""
-        mapped_image = self._imager.map_color_wta()
+        mapped_image = self._imager.map_color_wta(self._value)
         # iterate through the entire image matrix and check pixel color against
         # local _color variable
-        self._imager.set_image(mapped_image)
-        width = self._imager.xmax
-        height = self._imager.ymax
+
+        mapped_image.get_image_dims()
+        width = mapped_image.xmax
+        height = mapped_image.ymax
         counter = 0
-        for pixel in range(height):
-            for pixel2 in range(width):
-                pixel_color = self._imager.get_pixel(pixel, pixel2)
+        for pixel in range(width):
+            for pixel2 in range(height):
+                pixel_color = mapped_image.get_pixel(pixel, pixel2)
                 if pixel_color == self._color:
                     counter += 1
         self._match_degree = counter / (width * height)
@@ -70,5 +71,10 @@ class DetectColor(Behavior):
     def _sense_and_act(self):
         """Calculate weight"""
         self._value = self._raw_values[0][0]
+        self._imager.set_image(self._value)
         self._color_detected = self.analyze_picture(0.25)
         self._weight = self._priority * self._match_degree
+        print("\n\n\t\t\tIMAGER STUFF")
+        print("\t\tDETECTED", self._color_detected)
+        print("\t\tMATCH DEGREE", self._match_degree)
+        print("\t\tWEIGHT", self._weight)

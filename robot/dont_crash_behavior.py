@@ -16,14 +16,14 @@ class DontCrashBehavior(Behavior):
         self._active_flag = False
         self._motor_recommendations = [0.0, 0.0]
 
-    def consider_deactivation(self):
+    def _consider_deactivation(self):
         """If no obstacle is detected, then deactivate"""
         for value in self._raw_values:
             if value < self._threshold_distance:
                 return
         self._active_flag = False
 
-    def consider_activation(self):
+    def _consider_activation(self):
         """If an obstacle is detected, then activate"""
         for value in self._raw_values:
             if value < self._threshold_distance:

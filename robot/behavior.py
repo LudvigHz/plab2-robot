@@ -44,9 +44,13 @@ class Behavior:
 
         self.update_sensor_value()
         if self._active_flag:
-            self._consider_deactivation
+            self._consider_deactivation()
+            if not self._active_flag:
+                self._bbcon.deactivate_behavior(self)
         else:
-            self._consider_activation
+            self._consider_activation()
+            if self._active_flag:
+                self._bbcon.activate_behavior(self)
 
         self._sense_and_act()
 

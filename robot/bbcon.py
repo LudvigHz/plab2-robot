@@ -67,7 +67,7 @@ class BBCON:
         6 - Reset Sensobs
         """
 
-        for sensor in self._active_sensobs:
+        for sensor in self._sensobs:
             sensor.update()
 
         for behavior in self._behaviors:

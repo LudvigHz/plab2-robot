@@ -1,13 +1,15 @@
-'''File containing the color-detecting class'''
+"""File containing the color-detecting class"""
 
 from robot.behavior import Behavior
 from robot.sensors.camera import Camera
 from robot.sensors.imager2 import Imager
+
 # from .sensors.motors import Motors
 
 
 class DetectColor(Behavior):
-    '''Class for detecting color using the Raspicam'''
+    """Class for detecting color using the Raspicam"""
+
     _color_detected = None
     _camera = None
     _value = None
@@ -16,7 +18,7 @@ class DetectColor(Behavior):
     _timer = None
 
     def __init__(self, colorname, bbcon, priority, sensobs):
-        '''Color input determines which color the camera should detect: red, green, blue, white or black'''
+        """Color input determines which color the camera should detect: red, green, blue, white or black"""
         super().__init__(bbcon, priority, sensobs)
         self._halt_request = False
         self._active_flag = False
@@ -30,23 +32,23 @@ class DetectColor(Behavior):
         self._timer = 0
 
     def reset(self):
-        '''Resets the object'''
+        """Resets the object"""
         self._camera.reset()
         self._value = None
         self._color = None
 
     def set_color(self, color):
-        '''Set new color to detect'''
+        """Set new color to detect"""
         self._color = color
 
     def take_picture(self, threshold=0.3):
-        '''Takes a picture and updates _value, threshold is the percentage of the pixels which should match _color'''
+        """Takes a picture and updates _value, threshold is the percentage of the pixels which should match _color"""
         self._camera.update()
         self._value = self._camera.get_value()  # returns Image-object
         self._color_detected = self.analyze_picture(threshold)
 
     def analyze_picture(self, threshold):
-        '''Returns a boolean, determining if the picture is a match with _color'''
+        """Returns a boolean, determining if the picture is a match with _color"""
         mapped_image = self._imager.map_color_wta()
         # iterate through the entire image matrix and check pixel color against
         # local _color variable
@@ -63,11 +65,11 @@ class DetectColor(Behavior):
         return self._match_degree > threshold
 
     def consider_deactivation(self):
-        '''Deactivate if active, take pictures in intervals'''
+        """Deactivate if active, take pictures in intervals"""
         self._active_flag = False
 
     def consider_activation(self):
-        '''Activate if _timer is high enough (take pictures in intervals of 10*timestep (10*0.5s))'''
+        """Activate if _timer is high enough (take pictures in intervals of 10*timestep (10*0.5s))"""
         if self._timer > 10:
             self._active_flag = True
             self._timer = 0
@@ -75,7 +77,7 @@ class DetectColor(Behavior):
             self._timer += 1
 
     def _sense_and_act(self):
-        '''Calculate weight'''
+        """Calculate weight"""
         self.take_picture()
         self._weight = self._priority * self._match_degree
 

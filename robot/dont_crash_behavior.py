@@ -22,12 +22,14 @@ class DontCrashBehavior(Behavior):
             if value < self._threshold_distance:
                 return
         self._active_flag = False
+        self._bbcon.set_obstacle_detected_flag(False)
 
     def _consider_activation(self):
         """If an obstacle is detected, then activate"""
         for value in self._raw_values:
             if value < self._threshold_distance:
                 self._active_flag = True
+                self._bbcon.set_obstacle_detected_flag(True)
                 return
 
     def _sense_and_act(self):

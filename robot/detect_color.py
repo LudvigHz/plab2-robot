@@ -41,7 +41,7 @@ class DetectColor(Behavior):
         """Set new color to detect"""
         self._color = color
 
-    def take_picture(self, threshold=0.3):
+    def take_picture(self, threshold=0.25):
         """Takes a picture and updates _value, threshold is the percentage of the pixels which should match _color"""
         self._camera.update()
         self._value = self._camera.get_value()  # returns Image-object
@@ -65,16 +65,14 @@ class DetectColor(Behavior):
         return self._match_degree > threshold
 
     def consider_deactivation(self):
-        """Deactivate if active, take pictures in intervals"""
-        self._active_flag = False
+        """Deactivate if no obstacle detected"""
+        if not(self._bbcon.get_obstacle_detected_flag()):
+            self._active_flag = False
 
     def consider_activation(self):
-        """Activate if _timer is high enough (take pictures in intervals of 10*timestep (10*0.5s))"""
-        if self._timer > 10:
+        """Activate if obstacle detected"""
+        if self._bbcon.get_obstacle_detected_flag():
             self._active_flag = True
-            self._timer = 0
-        else:
-            self._timer += 1
 
     def _sense_and_act(self):
         """Calculate weight"""

@@ -72,3 +72,7 @@ class Behavior:
     def get_halt_request(self):
         """Getter"""
         return self._halt_request
+
+    def get_sensobs(self):
+        """Getter"""
+        return self._sensobs

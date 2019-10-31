@@ -36,10 +36,26 @@ class BBCON:
     def activate_behavior(self, behavior):
         """Add an existing behavior onto the active-behaviors list"""
         self._active_behaviors.append(behavior)
+        for sensob in behavior.get_sensobs():
+            if sensob not in self._sensobs:
+                self.add_sensob(sensob)
+                break
 
     def deactivate_behavior(self, behavior):
         """Remove an existing behavior from the active behaviors list"""
         self._active_behaviors.remove(behavior)
+        for sensob in behavior.get_sensobs():
+            sensob_present = False
+            for other_behavior in self._active_behaviors:
+                if sensob in other_behavior.get_sensobs():
+                    sensob_present = True
+                    break
+            if not sensob_present:
+                self._remove_sensob(sensob)
+
+    def _remove_sensob(self, sensob):
+        """Removes sensob from _active_sensob_list"""
+        self._sensobs.remove(sensob)
 
     def run_one_timestep(self):
         """

@@ -16,7 +16,7 @@ class BBCON:
     _behaviors = []
     _active_behaviors = []
     _sensobs = []
-    _motob = []
+    _motob = None
     _arbitrator = None
 
     def __init__(self):
@@ -76,6 +76,9 @@ class BBCON:
         delta_time = perf_counter() - tic
         if delta_time < self._delay:
             sleep(self._delay - delta_time)
+
+    def stop(self):
+        self._motob.update([0, 0])
 
     def get_active_behaviors(self):
         """Getter"""

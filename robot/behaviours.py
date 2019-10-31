@@ -20,6 +20,7 @@ class FollowLine(Behavior):
     def calculate_match_degree(self):
         """Calculate match. Darker reading on the edges give higher values"""
         self._match_degree = 2
+        print("\nRAW VALUE", self._raw_values)
         """sum(
             [i * (1 - val) for i, val in enumerate(self._raw_values[0][0][2::-1])]
         )
@@ -31,10 +32,10 @@ class FollowLine(Behavior):
         self.calculate_match_degree()
         self._weight = self._match_degree * self._priority
         # If 1 of the leftmost sensors hava a value higher than 0.2, turn left
-        if len(list(filter(lambda x: x < 0.3, self._raw_values[0][0][:2]))) > 1:
-            self._motor_recommendations = [0.2, 0.8]
+        if len(list(filter(lambda x: x < 0.6, self._raw_values[0][0][:2]))) > 1:
+            self._motor_recommendations = [0.1, 0.4]
         # If 1 of the rightmost sensors hava a value higher than 0.2, turn right
-        elif len(list(filter(lambda x: x < 0.3, self._raw_values[0][0][4:]))) > 1:
-            self._motor_recommendations = [0.8, 0.2]
+        elif len(list(filter(lambda x: x < 0.6, self._raw_values[0][0][4:]))) > 1:
+            self._motor_recommendations = [0.4, 0.1]
         else:
-            self._motor_recommendations = [0.6, 0.6]
+            self._motor_recommendations = [0.4, 0.4]

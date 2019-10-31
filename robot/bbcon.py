@@ -8,11 +8,12 @@ from robot.motob import Motob
 
 class BBCON:
     """Behavior-Based Controller - checked at each timestep to determine the robot's next move"""
+
     _obstacle_detected_flag = False
 
     "Config"
     _stochastic = False
-    _delay = 0.5
+    _delay = 0.3
 
     _behaviors = []
     _active_behaviors = []

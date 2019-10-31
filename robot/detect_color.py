@@ -67,7 +67,7 @@ class DetectColor(Behavior):
 
     def consider_deactivation(self):
         """Deactivate if no obstacle is detected"""
-        if not(self._bbcon.get_obstacle_detected_flag()):
+        if not (self._bbcon.get_obstacle_detected_flag()):
             self._active_flag = False
 
     def consider_activation(self):
@@ -79,7 +79,6 @@ class DetectColor(Behavior):
         """Calculate weight"""
         self.take_picture()
         self._weight = self._priority * self._match_degree
-
 
     def update(self):
         """The main interface between the bbcon and the behavior:

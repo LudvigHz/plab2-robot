@@ -7,8 +7,8 @@ class DontCrashBehavior(Behavior):
     """Behavior that uses the UltraSonic Sensob to not crash"""
 
     # Config
-    _threshold_distance = 30
-    _stop_distance = 10
+    _threshold_distance = 8
+    _stop_distance = 5
 
     def __init__(self, bbcon, priority, sensobs):
         super().__init__(bbcon, priority, sensobs)
@@ -18,7 +18,7 @@ class DontCrashBehavior(Behavior):
 
     def _consider_deactivation(self):
         """If no obstacle is detected, then deactivate"""
-        for value in self._raw_values:
+        for value in self._raw_values[0]:
             if value < self._threshold_distance:
                 return
         self._active_flag = False
@@ -26,7 +26,7 @@ class DontCrashBehavior(Behavior):
 
     def _consider_activation(self):
         """If an obstacle is detected, then activate"""
-        for value in self._raw_values:
+        for value in self._raw_values[0]:
             if value < self._threshold_distance:
                 self._active_flag = True
                 self._bbcon.set_obstacle_detected_flag(True)

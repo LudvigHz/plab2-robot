@@ -10,26 +10,33 @@ from robot.sensors.ultrasonic import Ultrasonic
 from robot.sensors.zumo_button import ZumoButton
 
 print("Running test.py")
-bbcon = BBCON()
-# ultra = Sensob([Ultrasonic()])
-irarray = Sensob([ReflectanceSensors()])
-# bbcon.add_sensob(ultra)
-bbcon.add_sensob(irarray)
-
-# dont_crash = DontCrashBehavior(bbcon, 0.7, [ultra])
-# bbcon.add_behavior(dont_crash)
-# bbcon.activate_behavior(dont_crash)
-
-follow_line = FollowLine(bbcon, 1.0, [irarray])
-bbcon.add_behavior(follow_line)
-# bbcon.activate_behavior(follow_line)
-
-move_forward = MoveForwardBehavior(bbcon)
-bbcon.add_behavior(move_forward)
-# bbcon.activate_behavior(move_forward)
 
 
-ZumoButton().wait_for_press()
-while True:
-    print("While-loop")
-    bbcon.run_one_timestep()
+def test():
+    ZumoButton().wait_for_press()
+
+    bbcon = BBCON()
+
+    ultra = Sensob([Ultrasonic()])
+    irarray = Sensob([ReflectanceSensors()])
+
+    bbcon.add_sensob(ultra)
+    bbcon.add_sensob(irarray)
+
+    dont_crash = DontCrashBehavior(bbcon, 1.0, [ultra])
+    follow_line = FollowLine(bbcon, 0.7, [irarray])
+    move_forward = MoveForwardBehavior(bbcon, 0.1)
+
+    bbcon.add_behavior(dont_crash)
+    bbcon.add_behavior(follow_line)
+    bbcon.add_behavior(move_forward)
+
+    i = 0
+    while True:
+        print("While-loop")
+        bbcon.run_one_timestep()
+        i += 1
+        if i > 50:
+            break
+
+    bbcon.stop()

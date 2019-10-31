@@ -27,26 +27,18 @@ class DetectColor(Behavior):
         self._halt_request = False
         self._color_detected = False
         self._weight = 0
-        self._camera = Camera()
-        self._imager = Imager()
         self._color = self._imager.get_color_rgb(colorname)
         self._timer = 0
+        self._imager = Imager()
 
     def reset(self):
         """Resets the object"""
-        self._camera.reset()
         self._value = None
         self._color = None
 
     def set_color(self, color):
         """Set new color to detect"""
         self._color = color
-
-    def take_picture(self, threshold=0.25):
-        """Takes a picture and updates _value, threshold is the percentage of the pixels which should match _color"""
-        self._camera.update()
-        self._value = self._camera.get_value()  # returns Image-object
-        self._color_detected = self.analyze_picture(threshold)
 
     def analyze_picture(self, threshold):
         """Returns a boolean, determining if the picture is a match with _color"""
@@ -65,29 +57,18 @@ class DetectColor(Behavior):
         self._match_degree = counter / (width * height)
         return self._match_degree > threshold
 
-    def consider_deactivation(self):
+    def _consider_deactivation(self):
         """Deactivate if no obstacle is detected"""
         if not (self._bbcon.get_obstacle_detected_flag()):
             self._active_flag = False
 
-    def consider_activation(self):
+    def _consider_activation(self):
         """Activate if obstacle is detected"""
         if self._bbcon.get_obstacle_detected_flag():
             self._active_flag = True
 
     def _sense_and_act(self):
         """Calculate weight"""
-        self.take_picture()
+        self._value = self._raw_values[0][0]
+        self._color_detected = self.analyze_picture(0.25)
         self._weight = self._priority * self._match_degree
-
-    def update(self):
-        """The main interface between the bbcon and the behavior:
-        1 - Update the activity status
-        2 - Call sense and act
-        3 - Update the behavior’s weight
-        """
-        if self._active_flag:
-            self.consider_deactivation()
-        else:
-            self.consider_activation()
-        self._sense_and_act()

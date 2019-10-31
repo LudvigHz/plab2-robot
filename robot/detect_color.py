@@ -17,8 +17,9 @@ class DetectColor(Behavior):
     _imager = None  # Imager helper-class
     _timer = None
 
-    def __init__(self, colorname, bbcon, priority, sensobs):
-        """Color input determines which color the camera should detect: red, green, blue, white or black"""
+    def __init__(self, bbcon, sensobs, priority, colorname="red"):
+        """Color input determines which color the camera should detect: red, green, blue, white or black,
+        default is red"""
         super().__init__(bbcon, priority, sensobs)
         self._halt_request = False
         self._active_flag = False
@@ -65,12 +66,12 @@ class DetectColor(Behavior):
         return self._match_degree > threshold
 
     def consider_deactivation(self):
-        """Deactivate if no obstacle detected"""
+        """Deactivate if no obstacle is detected"""
         if not(self._bbcon.get_obstacle_detected_flag()):
             self._active_flag = False
 
     def consider_activation(self):
-        """Activate if obstacle detected"""
+        """Activate if obstacle is detected"""
         if self._bbcon.get_obstacle_detected_flag():
             self._active_flag = True
 

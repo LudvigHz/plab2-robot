@@ -1,6 +1,8 @@
 """File contains the Motob class"""
 from .sensors.motors import Motors
 
+speed = 0.5
+
 
 class Motob:
     """Interface between Behavior and one or more motor wrappers"""
@@ -14,7 +16,7 @@ class Motob:
     def update(self, motor_recommendations):
         """Receive a list of new motor recommendation, load it into the value slot, and
         operationalize it"""
-        self._value = motor_recommendations
+        self._value = [i * speed for i in motor_recommendations]
         self.operationalize()
 
     def operationalize(self):

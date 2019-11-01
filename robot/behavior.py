@@ -52,7 +52,8 @@ class Behavior:
             if self._active_flag:
                 self._bbcon.activate_behavior(self)
 
-        self._sense_and_act()
+        if self._active_flag:
+            self._sense_and_act()
 
     @abstractmethod
     def _sense_and_act(self):
@@ -71,3 +72,7 @@ class Behavior:
     def get_halt_request(self):
         """Getter"""
         return self._halt_request
+
+    def get_sensobs(self):
+        """Getter"""
+        return self._sensobs

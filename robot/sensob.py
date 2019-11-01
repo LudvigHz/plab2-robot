@@ -1,4 +1,5 @@
 """File contains the Sensob class"""
+from time import perf_counter
 
 
 class Sensob:
@@ -6,21 +7,28 @@ class Sensob:
 
     _wrappers = []
     _values = []
+    _delay = 1.0
+    _last_time = 0.0
 
-    def __init__(self, wrappers):
+    def __init__(self, wrappers, delay=0.0):
         self._wrappers = wrappers
-        for wrapper in wrappers:
-            wrapper.__init__()
+        self._values = [None] * len(wrappers)
+        self._delay = delay
 
     def update(self):
         """Fetch the relevant sensor value(s) and convert them into the pre-processed sensob
         value"""
-        for wrapper in self._wrappers:
-            wrapper.update()
+        if (perf_counter() - self._last_time) > self._delay:
+            for wrapper in self._wrappers:
+                wrapper.update()
 
-        for i in range(len(self._wrappers)):
-            value = self._wrappers[i].get_value()
-            self._values[i] = value
+            for i in range(len(self._wrappers)):
+                value = self._wrappers[i].get_value()
+                self._values[i] = value
+
+            print("\t\tSENSOB UPDATE:", self, self._values)
+
+            self._last_time = perf_counter()
 
     def get_values(self):
         """ Returns the sensor values """
@@ -28,5 +36,7 @@ class Sensob:
 
     def reset(self):
         """Reset the sensor(s) if applicable"""
-        for wrapper in self._wrappers:
-            wrapper.reset()
+
+        if (perf_counter() - self._last_time) > self._delay:
+            for wrapper in self._wrappers:
+                wrapper.reset()

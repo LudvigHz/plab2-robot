@@ -20,6 +20,7 @@ class Arbitrator:
         for i in range(1, len(behaviors)):
             if priority_behavior.get_weight() < behaviors[i].get_weight():
                 priority_behavior = behaviors[i]
+        print("\n\nCURRENT_BEHAVIOR:", priority_behavior)
         return (
             priority_behavior.get_motor_recommendations(),
             priority_behavior.get_halt_request(),

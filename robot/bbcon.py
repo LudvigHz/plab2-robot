@@ -67,6 +67,9 @@ class BBCON:
         6 - Reset Sensobs
         """
 
+        print("\n\t\t BBCON RUNNING LOOP!")
+        print("\t\t OBSTACLE DETECTED", self._obstacle_detected_flag)
+
         for sensor in self._sensobs:
             sensor.update()
 

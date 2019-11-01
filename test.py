@@ -29,16 +29,16 @@ def test():
     bbcon.add_sensob(camera)
 
     dont_crash = DontCrashBehavior(bbcon, 1.0, [ultra])
-    follow_line = FollowLine(bbcon, 0.7, [irarray])
+    # follow_line = FollowLine(bbcon, 0.7, [irarray])
     move_forward = MoveForwardBehavior(bbcon, 0.1, [irarray, ultra])
     detect_color = DetectColor(bbcon, 0.7, [camera])
-    avoid_tape = AvoidTapeBehavior(bbcon, 0.5, [irarray])
+    # avoid_tape = AvoidTapeBehavior(bbcon, 0.5, [irarray])
 
     bbcon.add_behavior(dont_crash)
-    bbcon.add_behavior(follow_line)
+    # bbcon.add_behavior(follow_line)
     bbcon.add_behavior(move_forward)
     bbcon.add_behavior(detect_color)
-    bbcon.add_behavior(avoid_tape)
+    # bbcon.add_behavior(avoid_tape)
 
     i = 0
     while True:

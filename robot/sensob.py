@@ -26,6 +26,8 @@ class Sensob:
                 value = self._wrappers[i].get_value()
                 self._values[i] = value
 
+            print("\t\tSENSOB UPDATE:", self, self._values)
+
             self._last_time = perf_counter()
 
     def get_values(self):

@@ -56,6 +56,7 @@ class DetectColor(Behavior):
                 if pixel_color == self._color:
                     counter += 1
         self._match_degree = counter / (width * height)
+        print("\t\tPIXEL MATCH COUNT:", counter)
         return self._match_degree > threshold
 
     def _consider_deactivation(self):

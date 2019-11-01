@@ -25,7 +25,7 @@ class FollowLine(Behavior):
 
     def _sense_and_act(self):
         self.calculate_match_degree()
-        self._weight = self._match_degree * self._priority
+        self._weight = min(self._match_degree, 1) * self._priority
         # If 1 of the leftmost sensors hava a value higher than 0.2, turn left
         if len(list(filter(lambda x: x < 0.6, self._raw_values[0][0][:2]))) > 1:
             self._motor_recommendations = [0.1, 0.8]

@@ -27,8 +27,8 @@ class DetectColor(Behavior):
         self._halt_request = False
         self._color_detected = False
         self._weight = 0
-        self._imager = Imager(height=96, width=128)
-        self._color = self._imager.get_color_rgb(colorname)
+        self._imager = Imager(height=32, width=32)
+        self._color = colorname
         self._timer = 0
 
     def reset(self):
@@ -49,15 +49,29 @@ class DetectColor(Behavior):
         mapped_image.get_image_dims()
         width = mapped_image.xmax
         height = mapped_image.ymax
-        counter = 0
+        red = 0
+        green = 0
+        blue = 0
         for pixel in range(width):
             for pixel2 in range(height):
                 pixel_color = mapped_image.get_pixel(pixel, pixel2)
-                if pixel_color == self._color:
-                    counter += 1
-        self._match_degree = counter / (width * height)
-        print("\t\tPIXEL MATCH COUNT:", counter)
-        return self._match_degree > threshold
+                if pixel_color[0] > 150:
+                    red += 1
+                elif pixel_color[1] > 150:
+                    green += 1
+                elif pixel_color[2] > 150:
+                    blue += 1
+        self._red_match_degree = red / (width * height)
+        self._green_match_degree = green / (width * height)
+        self._blue_match_degree = blue / (width * height)
+        if self._color == "red":
+            return self._red_match_degree > threshold
+        if self._color == "green":
+            return self._green_match_degree > threshold
+        if self._color == "blue":
+            return self._blue_match_degree > threshold
+        else:
+            return False
 
     def _consider_deactivation(self):
         """Deactivate if no obstacle is detected"""
@@ -73,7 +87,7 @@ class DetectColor(Behavior):
         """Calculate weight"""
         self._value = self._raw_values[0][0]
         self._imager.set_image(self._value)
-        self._color_detected = self.analyze_picture(0.25)
+        self._color_detected = self.analyze_picture(0.75)
         self._weight = self._priority * self._match_degree
         print("\n\n\t\t\tIMAGER STUFF")
         print("\t\tDETECTED", self._color_detected)

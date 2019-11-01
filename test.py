@@ -22,23 +22,27 @@ def test():
 
     ultra = Sensob([Ultrasonic()])
     irarray = Sensob([ReflectanceSensors()])
-    camera = Sensob([Camera(img_width=32, img_height=32)])
+    camera = Sensob([Camera(img_width=32, img_height=32)], delay=4)
 
     bbcon.add_sensob(ultra)
     bbcon.add_sensob(irarray)
     bbcon.add_sensob(camera)
 
-    dont_crash = DontCrashBehavior(bbcon, 0.5, [ultra])
+    dont_crash = DontCrashBehavior(bbcon, 0.7, [ultra])
     # follow_line = FollowLine(bbcon, 0.7, [irarray])
     move_forward = MoveForwardBehavior(bbcon, 0.1, [irarray, ultra])
     detect_color = DetectColor(bbcon, 0.9, [camera])
-    # avoid_tape = AvoidTapeBehavior(bbcon, 0.5, [irarray])
+    detect_green = DetectColor(
+        bbcon, 0.9, [camera], colorname="green", motor_recommendation=[1, -1]
+    )
+    avoid_tape = AvoidTapeBehavior(bbcon, 0.5, [irarray])
 
     bbcon.add_behavior(dont_crash)
     # bbcon.add_behavior(follow_line)
     bbcon.add_behavior(move_forward)
     bbcon.add_behavior(detect_color)
-    # bbcon.add_behavior(avoid_tape)
+    bbcon.add_behavior(detect_green)
+    bbcon.add_behavior(avoid_tape)
 
     i = 0
     while True:

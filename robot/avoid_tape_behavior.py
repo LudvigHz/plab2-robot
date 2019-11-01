@@ -6,7 +6,7 @@ class AvoidTapeBehavior(Behavior):
     """Behavior that backs up and rotates when encountering tape"""
 
     # Config
-    _threshold = 0.3
+    _threshold = 0.2
 
     _remain_active = False
 

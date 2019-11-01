@@ -17,13 +17,15 @@ class DetectColor(Behavior):
     _imager = None  # Imager helper-class
     _timer = None
 
-    def __init__(self, bbcon, priority, sensobs, colorname="red"):
+    def __init__(
+        self, bbcon, priority, sensobs, colorname="red", motor_recommendation=[-1, -1]
+    ):
         """Color input determines which color the camera should detect: red, green, blue, white or black,
         default is red"""
         super().__init__(bbcon, priority, sensobs)
         self._halt_request = False
         self._active_flag = False
-        self._motor_recommendations = [-1.0, -1.0]  # recommended to stop
+        self._motor_recommendations = motor_recommendation  # recommended to stop
         self._halt_request = False
         self._color_detected = False
         self._weight = 0
@@ -65,10 +67,13 @@ class DetectColor(Behavior):
         self._green_match_degree = green / (width * height)
         self._blue_match_degree = blue / (width * height)
         if self._color == "red":
+            self._match_degree = self._red_match_degree
             return self._red_match_degree > threshold
         if self._color == "green":
+            self._match_degree = self._green_match_degree
             return self._green_match_degree > threshold
         if self._color == "blue":
+            self._match_degree = self._blue_match_degree
             return self._blue_match_degree > threshold
         else:
             return False

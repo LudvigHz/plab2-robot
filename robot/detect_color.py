@@ -42,7 +42,7 @@ class DetectColor(Behavior):
 
     def analyze_picture(self, threshold):
         """Returns a boolean, determining if the picture is a match with _color"""
-        mapped_image = self._imager.map_color_wta(self._value)
+        mapped_image = self._imager.map_color_wta()
         # iterate through the entire image matrix and check pixel color against
         # local _color variable
 
